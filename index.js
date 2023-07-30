@@ -6,11 +6,11 @@ const FastifyAuth = require('@fastify/oauth2')
 const Base = require('bfx-facs-base')
 const debug = require('debug')('hp:server:http:oauth2')
 
-class HttpServerAuthFacility extends Base {
+class HttpdAuthFacility extends Base {
   constructor (caller, opts, ctx) {
     super(caller, opts, ctx)
 
-    this.name = 'server-http-oauth2'
+    this.name = 'httpd-oauth2'
     this._hasConf = true
 
     this.init()
@@ -46,4 +46,4 @@ class HttpServerAuthFacility extends Base {
   }
 }
 
-module.exports = HttpServerAuthFacility
+module.exports = HttpdAuthFacility
