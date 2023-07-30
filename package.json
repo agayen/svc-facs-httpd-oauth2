@@ -1,5 +1,5 @@
 {
-  "name": "svc-facs-server-http-oauth2",
+  "name": "svc-facs-httpd-oauth2",
   "version": "0.0.1",
   "private": false,
   "description": "SVC Facility Http Auth oauth2",
@@ -24,7 +24,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tetherto/svc-facs-server-http-oauth2.git"
+    "url": "git+https://github.com/tetherto/svc-facs-httpd-oauth2.git"
   },
   "maintainers": [
     {
