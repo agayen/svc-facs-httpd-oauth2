@@ -1,9 +1,8 @@
 'use strict'
 
 const async = require('async')
-const FastifyAuth = require('@fastify/oauth2')
 const Base = require('bfx-facs-base')
-const debug = require('debug')('hp:server:http:oauth2')
+const FastifyAuth = require('@fastify/oauth2')
 
 const SUPPORTED_AUTHS = ['google']
 
@@ -35,7 +34,7 @@ class HttpdAuthFacility extends Base {
     return specs
   }
 
-  injection (server) {
+  injection () {
     const creds = this.conf.credentials
     const specs = this.getSpecs(this.conf.method)
 
@@ -52,6 +51,14 @@ class HttpdAuthFacility extends Base {
     }]
   }
 
+  resolveUserAccess (user, idField = 'email') {
+    return this.conf.users.find(u => u[idField] === user)
+  }
+
+  callbackUriUI () {
+    return this.conf.callbackUriUI
+  }
+
   _start (cb) {
     async.series([
       next => { super._start(next) },
@@ -59,14 +66,6 @@ class HttpdAuthFacility extends Base {
         if (!SUPPORTED_AUTHS.includes(this.conf.method)) {
           throw new Error('ERR_FACS_HTTPD_OAUTH2_METHOD_INVALID')
         }
-      }
-    ], cb)
-  }
-
-  _stop (cb) {
-    async.series([
-      next => { super._stop(next) },
-      async () => {
       }
     ], cb)
   }
