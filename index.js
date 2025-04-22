@@ -3,6 +3,7 @@
 const async = require('async')
 const Base = require('bfx-facs-base')
 const FastifyAuth = require('@fastify/oauth2')
+const crypto = require('crypto')
 
 const SUPPORTED_AUTHS = ['google']
 
@@ -47,7 +48,24 @@ class HttpdAuthFacility extends Base {
       },
       startRedirectPath: specs.startRedirectPath,
       callbackUri: specs.callbackUri,
-      callbackUriParams: specs.callbackUriParams
+      callbackUriParams: specs.callbackUriParams,
+      generateStateFunction: (request) => {
+        const statePayload = {
+          ...request.query,
+          csfr_token: crypto.randomBytes(8).toString('hex')
+        }
+
+        return Buffer.from(JSON.stringify(statePayload)).toString('base64url')
+      },
+      checkStateFunction: function (request, callback) {
+        const stateCookie = request.cookies['oauth2-redirect-state']
+
+        if (stateCookie && request.query.state === stateCookie) {
+          callback()
+          return
+        }
+        callback(new Error('ERR_INVALID_STATE'))
+      }
     }]
   }
 
